@@ -1,7 +1,20 @@
 // Import Fastify using ESM syntax
 import Fastify from "fastify";
+import pino from "pino";
 
-const fastify = Fastify({ logger: true });
+const logger = pino({
+  transport: {
+    target: "pino-pretty",
+    options: {
+      colorize: true,
+    },
+  },
+});
+
+logger.info("hi");
+const fastify = Fastify({
+  logger: logger,
+});
 
 const helloRoute = async (fastify, options) => {
   fastify.route({
