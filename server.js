@@ -3,10 +3,13 @@ import Fastify from "fastify";
 
 const fastify = Fastify({ logger: true });
 
-// Defining a route
-fastify.get("/", async (request, reply) => {
-  return { hello: "world" };
-});
+const helloRoute = async (fastify, options) => {
+  fastify.get("/", async (request, reply) => {
+    return { hello: "world" };
+  });
+};
+
+fastify.register(helloRoute);
 
 async function startServer() {
   try {
