@@ -4,8 +4,22 @@ import Fastify from "fastify";
 const fastify = Fastify({ logger: true });
 
 const helloRoute = async (fastify, options) => {
-  fastify.get("/", async (request, reply) => {
-    return { hello: "world" };
+  fastify.route({
+    method: "GET",
+    url: "/",
+    schema: {
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            hello: { type: "string" },
+          },
+        },
+      },
+    },
+    handler: async (request, reply) => {
+      return { hello: "world" };
+    },
   });
 };
 
