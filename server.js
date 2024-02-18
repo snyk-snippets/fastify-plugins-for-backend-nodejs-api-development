@@ -11,9 +11,13 @@ const logger = pino({
   },
 });
 
-logger.info("hi");
 const fastify = Fastify({
   logger: logger,
+});
+
+fastify.register(import("@fastify/cors"), {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
 const helloRoute = async (fastify, options) => {
