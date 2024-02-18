@@ -15,6 +15,20 @@ const fastify = Fastify({
   logger: logger,
 });
 
+fastify.register(import("@fastify/env"), {
+  dotenv: true,
+  schema: {
+    type: "object",
+    required: ["PORT"],
+    properties: {
+      PORT: {
+        type: "string",
+        default: 3000,
+      },
+    },
+  },
+});
+
 fastify.register(import("@fastify/cors"), {
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -44,9 +58,11 @@ fastify.register(helloRoute);
 
 async function startServer() {
   try {
+    // wait for all plugins to run
+    await fastify.ready();
     // Start the server
     const address = await fastify.listen({
-      port: 3000,
+      port: fastify.config.PORT,
       host: "localhost",
     });
 
